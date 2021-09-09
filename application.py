@@ -26,8 +26,8 @@ class SynApi(Resource):
         for word in data_list:
             synonyms        = wordnet.synsets(word)
             lemmas          = list(dict.fromkeys(chain.from_iterable([word.lemma_names() for word in synonyms])))
-            result_synonyms = json.dumps(lemmas)
-            res_dict[word]  = result_synonyms
+            # result_synonyms = json.dumps(lemmas)
+            res_dict[word]  = lemmas
 
         return jsonify(res_dict)
 
