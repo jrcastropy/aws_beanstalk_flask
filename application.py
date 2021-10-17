@@ -18,18 +18,21 @@ def hello_world():
 class SynApi(Resource):
 
     def post(self):
-        payl        = request.get_json()
-        data_list   = payl['data']
+        payl        = request.get_json(force=True)
 
-        res_dict    = {}
+        if payl is not None:
+            data_list   = payl['data']
 
-        for word in data_list:
-            synonyms        = wordnet.synsets(word)
-            lemmas          = list(dict.fromkeys(chain.from_iterable([word.lemma_names() for word in synonyms])))
-            # result_synonyms = json.dumps(lemmas)
-            res_dict[word]  = lemmas
+            res_dict    = {}
 
-        return jsonify(res_dict)
+            for word in data_list:
+                synonyms        = wordnet.synsets(word)
+                lemmas          = list(dict.fromkeys(chain.from_iterable([word.lemma_names() for word in synonyms])))
+                # result_synonyms = json.dumps(lemmas)
+                res_dict[word]  = lemmas
+
+            return jsonify(res_dict)
+        return jsonify({"data":"no data parsed"})
 
 api.add_resource(SynApi, '/Syn')
 
